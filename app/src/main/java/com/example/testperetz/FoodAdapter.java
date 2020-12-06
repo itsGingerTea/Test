@@ -18,13 +18,10 @@ import java.util.List;
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
 
     private List<ListItem> listItems;
-    private Context context;
-
     public int count = 0;
 
-    public FoodAdapter(List<ListItem> listItems, Context context) {
+    public FoodAdapter(List<ListItem> listItems) {
         this.listItems = listItems;
-        this.context = context;
     }
 
     @NonNull
@@ -38,51 +35,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-
-        ListItem listItem = listItems.get(position);
-
-
-        holder.textViewName.setText(listItem.getName());
-        holder.textViewPrice.setText(listItem.getPrice() + " ₽");
-        //holder.textViewCount.setText(String.valueOf(count));
-
-        holder.buttonPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                count++;
-                holder.textViewCount.setText(String.valueOf(count));  //holder is final. Why?
-
-                if (count < 1) {
-                    holder.textViewCount.setVisibility(View.INVISIBLE);
-                } else {
-                    holder.textViewCount.setVisibility(View.VISIBLE);
-                }
-
-
-            }
-        });
-
-        holder.buttonMinus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                count--;
-                holder.textViewCount.setText(String.valueOf(count));  //holder is final. Why?
-
-                if (count < 1) {
-                    holder.textViewCount.setVisibility(View.INVISIBLE);
-                } else {
-                    holder.textViewCount.setVisibility(View.VISIBLE);
-                }
-
-            }
-        });
-
-        Picasso.get()
-        .load(listItem.getImageUrl())
-        .resize(350,350)
-        .centerCrop()
-        .into(holder.imageView);
-
+        holder.bind(listItems.get(position));
     }
 
     @Override
@@ -98,6 +51,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
         public TextView textViewCount;
         public Button buttonPlus;
         public Button buttonMinus;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -109,6 +63,44 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
             buttonMinus = (Button) itemView.findViewById(R.id.buttonMinus);
         }
 
+        public void bind(ListItem item) {
+            textViewName.setText(item.getName());
+            textViewPrice.setText(item.getPrice() + " ₽");
+
+            buttonPlus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    count++;
+                    textViewCount.setText(String.valueOf(count));
+
+                    if (count < 1) {
+                        textViewCount.setVisibility(View.INVISIBLE);
+                    } else {
+                        textViewCount.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+
+            buttonMinus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    count--;
+                    textViewCount.setText(String.valueOf(count));
+
+                    if (count < 1) {
+                        textViewCount.setVisibility(View.INVISIBLE);
+                    } else {
+                        textViewCount.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+
+            Picasso.get()
+                    .load(item.getImageUrl())
+                    .resize(350, 350)
+                    .centerCrop()
+                    .into(imageView);
+        }
 
     }
 

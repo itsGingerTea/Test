@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -22,14 +21,20 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class FoodActivity extends Activity {
 
-    private static final String URL_DATA = "https://peretz-group.ru/api/v2/products?category=93&key=47be9031474183ea92958d5e255d888e47bdad44afd5d7b7201d0eb572be5278";
+    private static final String BASE_URL = "https://peretz-group.ru/api/v2/";
 
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private RecyclerView recyclerView; //
+    private RecyclerView.Adapter adapter; //
 
-    private List<ListItem> listItems;
+    private List<ListItem> listItems;//
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,55 +50,33 @@ public class FoodActivity extends Activity {
 
         listItems = new ArrayList<>();
 
-        loadRecyclerView();
+        getItemsResponse();
 
     }
 
-    private void loadRecyclerView() {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
+    private void getItemsResponse() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                URL_DATA,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+        PeretzApi peretzApi = retrofit.create(PeretzApi.class);
+        Call<List<ListItem>> call = peretzApi.getItems();
 
-                        progressDialog.dismiss();
+        call.enqueue(new Callback<List<ListItem>>() {
+            @Override
+            public void onResponse(Call<List<ListItem>> call, Response<List<ListItem>> response) {
+                if (response.isSuccessful()) {
+                    listItems = response.body();
+                    adapter = new FoodAdapter(listItems);
+                    recyclerView.setAdapter(adapter);
+                }
+            }
 
-                        try {
-                            JSONArray array = new JSONArray(response);
-
-                            for (int i = 0; i < array.length(); i++) {
-                                JSONObject o = array.getJSONObject(i);
-                                ListItem item = new ListItem(
-                                        o.getString("name"),
-                                        o.getString("price"),
-                                        o.getString("image")
-                                );
-                                listItems.add(item);
-                            }
-
-                            adapter = new FoodAdapter(listItems, getApplicationContext());
-                            recyclerView.setAdapter(adapter);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-
-                    }
-                });
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+            @Override
+            public void onFailure(Call<List<ListItem>> call, Throwable t) {
+            }
+        });
     }
+
 }

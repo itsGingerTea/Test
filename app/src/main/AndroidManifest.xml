@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:label="Peretz">
+        android:label="Peretz"
+        android:usesCleartextTraffic="true">
         <activity android:name=".FoodActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">

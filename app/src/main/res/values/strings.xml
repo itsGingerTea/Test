@@ -4,4 +4,5 @@
     <string name="price">Price ₽</string>
     <string name="count">1</string>
     <string name="name">Name</string>
+    <string name="item_product_price">%s ₽</string>
 </resources>
