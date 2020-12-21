@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="10dp"
-    app:cardBackgroundColor="#000">
+    app:cardBackgroundColor="#000"
+    style="@android:style/TextAppearance.Widget.Button">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -38,9 +39,9 @@
 
         <Button
             android:id="@+id/buttonPlus"
-            android:layout_width="24dp"
-            android:layout_height="23dp"
-            android:layout_marginTop="52dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="48dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/add_food"
             app:layout_constraintEnd_toEndOf="parent"
@@ -50,10 +51,13 @@
             android:id="@+id/textViewCount"
             android:layout_width="19dp"
             android:layout_height="26dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="50dp"
+            android:layout_marginEnd="17dp"
             android:text="@string/count"
             android:textColor="@color/cardview_light_background"
             android:textSize="20sp"
+            android:visibility="invisible"
             app:layout_constraintEnd_toStartOf="@+id/buttonPlus"
             app:layout_constraintHorizontal_bias="0.563"
             app:layout_constraintStart_toEndOf="@+id/buttonMinus"
@@ -61,21 +65,25 @@
 
         <Button
             android:id="@+id/buttonMinus"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:layout_marginTop="52dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="41dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="48dp"
             android:background="@drawable/delete_food"
+            android:visibility="invisible"
             app:layout_constraintEnd_toStartOf="@+id/buttonPlus"
-            app:layout_constraintHorizontal_bias="0.357"
+            app:layout_constraintHorizontal_bias="0.382"
             app:layout_constraintStart_toEndOf="@+id/textViewPrice"
             app:layout_constraintTop_toBottomOf="@+id/textViewName" />
 
         <TextView
             android:id="@+id/textViewName"
-            android:layout_width="235dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="12dp"
+            android:layout_width="202dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="37dp"
+            android:layout_marginEnd="16dp"
             android:fontFamily="@font/sf_pro_display_thin"
             android:text="@string/name"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"

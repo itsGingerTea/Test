@@ -68,7 +68,7 @@ public class FoodActivity extends Activity {
             public void onResponse(Call<List<ListItem>> call, Response<List<ListItem>> response) {
                 if (response.isSuccessful()) {
                     listItems = response.body();
-                    adapter = new FoodAdapter(listItems);
+                    adapter = new FoodAdapter(listItems, FoodActivity.this);
                     recyclerView.setAdapter(adapter);
                 }
             }
